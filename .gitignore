@@ -8,5 +8,8 @@ dbt/.user.yml
 dbt/profiles.yml
 .env
 
+# Python
+.venv/
+
 # Mac files
 .DS_Store

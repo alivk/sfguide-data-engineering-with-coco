@@ -1,0 +1,9 @@
+{
+  "name": "coco-de-guide",
+  "version": "1.0.0",
+  "description": "Project plugin for the CoCo data engineering guide: dbt model conventions, agents, and hooks.",
+  "author": "me",
+  "skills": ["./skills"],
+  "agents": ["./agents"],
+  "hooks": "./hooks/hooks.json"
+}
