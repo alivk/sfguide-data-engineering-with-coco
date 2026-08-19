@@ -1,0 +1,145 @@
+version: 2
+
+models:
+  - name: customers
+    description: One row per TPCH customer, enriched with nation and region names.
+    columns:
+      - name: customer_key
+        description: Primary key. Sourced from customer.c_custkey.
+        tests:
+          - not_null
+          - unique
+
+      - name: customer_name
+        tests:
+          - not_null
+          - unique
+
+      - name: phone
+        tests:
+          - not_null
+
+      - name: account_balance
+        description: Can legitimately be negative in TPCH, so only tested for presence.
+        tests:
+          - not_null
+
+      - name: market_segment
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values:
+                  - AUTOMOBILE
+                  - BUILDING
+                  - FURNITURE
+                  - HOUSEHOLD
+                  - MACHINERY
+
+      - name: nation
+        tests:
+          - not_null
+
+      - name: region
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values:
+                  - AFRICA
+                  - AMERICA
+                  - ASIA
+                  - EUROPE
+                  - MIDDLE EAST
+
+  - name: orders_summary
+    description: One row per order, with line item metrics aggregated from lineitem.
+    columns:
+      - name: order_key
+        description: Primary key. Sourced from orders.o_orderkey.
+        tests:
+          - not_null
+          - unique
+
+      - name: customer_key
+        description: Foreign key to the customers model.
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('customers')
+                field: customer_key
+
+      - name: order_status
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['F', 'O', 'P']
+
+      - name: order_priority
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values:
+                  - 1-URGENT
+                  - 2-HIGH
+                  - 3-MEDIUM
+                  - 4-NOT SPECIFIED
+                  - 5-LOW
+
+      - name: order_date
+        tests:
+          - not_null
+
+      - name: order_total_price
+        tests:
+          - not_null
+
+      - name: line_item_count
+        description: Every order in TPCH has at least one line item.
+        tests:
+          - not_null
+
+      - name: total_quantity
+        tests:
+          - not_null
+
+      - name: total_extended_price
+        tests:
+          - not_null
+
+      - name: total_net_price
+        tests:
+          - not_null
+
+      - name: total_charged_price
+        tests:
+          - not_null
+
+  - name: supplier_performance
+    description: One row per supplier, with order and revenue metrics aggregated from lineitem.
+    columns:
+      - name: supplier_key
+        description: Primary key. Sourced from supplier.s_suppkey.
+        tests:
+          - not_null
+          - unique
+
+      - name: supplier_name
+        tests:
+          - not_null
+          - unique
+
+      - name: total_orders
+        tests:
+          - not_null
+
+      - name: total_revenue
+        tests:
+          - not_null
+
+      - name: average_discount
+        tests:
+          - not_null
